@@ -53,7 +53,6 @@ const SoundFX = (function() {
     osc.start();
 
     let i = 0;
-    // const interval = rInterval(playTune, _delay);
     const interval = _interval(playTune, _delay);
 
     function playTune(){
@@ -62,6 +61,7 @@ const SoundFX = (function() {
       i += 1;
       if (i > _times) {
         interval.clear();
+        osc.stop();
       }
     }
   }
