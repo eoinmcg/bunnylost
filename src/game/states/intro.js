@@ -15,6 +15,8 @@ export class Intro {
 
     this.curtain = g.h;
 
+    this.touches = 0;
+
     this.bunny = g.spawn('bunny', {x: 120, y: 400});
 
     this.addText('HALP!', 50);
@@ -42,6 +44,14 @@ export class Intro {
   }
 
   update(step) {
+    let i = this.g.input.keys;
+    if (i.r || i.l) {
+      this.touches += 1;
+    }
+    if (this.touches > 10) {
+        this.g.changeState('main');
+    }
+
     if (this.curtain > 1) {
       this.curtain -= 9;
     }
@@ -72,7 +82,8 @@ export class Intro {
     this.g.addEvent({
       time: delay,
       cb: () => {
-        this.g.sfx.play(this.g.H.rndArray(this.sounds));
+        const sfx = this.g.H.rndArray(this.sounds)
+        this.g.sfx.play(sfx);
         this.g.spawn('text', {x: 100, y: 310, scale: 5, text: text, col: 4});
         this.bunny.flip.x = (this.bunny.flip.x) ? 0 : 1;
       }

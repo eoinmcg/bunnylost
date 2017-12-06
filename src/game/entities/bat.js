@@ -15,7 +15,7 @@ export class Bat extends Sprite {
       fly: { frames: [1,2], rate: 0.01 },
     };
     this.changeAnim('fly');
-    this.range = g.H.rnd(1,6) / 1000;
+    this.range = g.H.rnd(1,3) / 1000;
   }
 
   update(step) {
@@ -37,4 +37,3 @@ export class Bat extends Sprite {
     super.render();
   }
 }
-

@@ -22,6 +22,9 @@ export class Map {
     this.cx = 0;
     this.cy = 0;
 
+    this.tick = 0;
+    this.waves = 0;
+
     let water2 = g.draw.resize(g.imgs['water2'], this.scale);
     let water3 = g.draw.flip(water2, 1, 1);
 
@@ -79,6 +82,11 @@ export class Map {
 
   update(step) {
     this.cy += ~~(  this.p.speed  * step );
+    this.tick += 1;
+    if (this.tick > 1000) {
+      this.tick = 0;
+    }
+    this.waves = (Math.floor(this.tick / 40) % 2) ? 0 : 1
 
     if (this.cy > this.tileDim) {
       this.data.shift();
@@ -103,20 +111,18 @@ export class Map {
     for (let i = 0; i < h; i += 1) {
       let row = this.data[this.data.length - i - 1];
       x = 0;
-      // console.log(row, i);
-      row.forEach(function(cell) {
+      row.forEach((cell) => {
         if (cell) {
-          try {
-            ctx.drawImage(tiles[cell],x, y);
-            if (cell === 6) {
-              if (Math.random() > 0.95) {
-                let pos = g.H.rnd(wh/4, wh - (wh/4))
-                ctx.fillStyle = '#fff';
-                ctx.fillRect(x + pos, y + pos, 8, 4);
-              }
+          ctx.drawImage(tiles[cell],x, y);
+          if (this.waves === 1 && (cell === 8 || cell === 7)) {
+            // ctx.fillStyle = '#31a2f2';
+            // ctx.fillRect(x, y, wh, wh);
+          } else if (cell === 6) {
+            if (Math.random() > 0.95) {
+              let pos = g.H.rnd(wh/4, wh - (wh/4))
+              ctx.fillStyle = '#fff';
+              ctx.fillRect(x + pos, y + pos, 8, 4);
             }
-          } catch (e) {
-            // console.log(tiles[cell], e);
           }
         }
         x += wh;

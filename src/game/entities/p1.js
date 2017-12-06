@@ -44,7 +44,6 @@ export class P1 extends Sprite {
       if (this.y > this.targetY) { this.y -= this.speed; }
     }
 
-
     if (this.y > this.g.h) {
       this.kill();
       this.g.sfx.play('fart');
@@ -66,11 +65,11 @@ export class P1 extends Sprite {
     let newX = this.x;
     let newY = this.y;
 
-      if (i.r) {
-        newX = this.x + tile;
-      } else if (i.l) {
-        newX = this.x - tile;
-      }
+    if (i.r) {
+      newX = this.x + tile;
+    } else if (i.l) {
+      newX = this.x - tile;
+    }
 
     newY = (newX != this.x && this.y > tile * 2) 
       ? this.y - tile : newY
@@ -94,11 +93,11 @@ export class P1 extends Sprite {
         this.flip.x = !this.flip.x;
         this.g.score -= 1;
         this.hurt = 10;
-          newY = this.y + tile;
-          newX = newX > this.x 
-            ? this.x - tile : this.x + tile;
-          this.speed = 8;
-          this.targetX = newX; this.targetY = newY;
+        newY = this.y + tile;
+        newX = newX > this.x 
+          ? this.x - tile : this.x + tile;
+        this.speed = 8;
+        this.targetX = newX; this.targetY = newY;
       }
     }
   }
@@ -108,5 +107,4 @@ export class P1 extends Sprite {
     this.kill();
     this.g.spawn('boom', {x: this.x, y: this.y, col: 3, magnitude: 32});
   }
-
 }

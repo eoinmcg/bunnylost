@@ -41,7 +41,9 @@ const SoundFX = (function() {
 
     let [_freq, _incr, _delay, _times, _vol, _type = 0] = d;
 
+    console.log(_type)
     const osc = soundContext.createOscillator(); // instantiate oscillator
+    _type = _type === undefined ? 0 : _type;
     osc.frequency.value = _freq;
     osc.type = oscTypes[_type];
 
