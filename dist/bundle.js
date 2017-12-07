@@ -757,8 +757,8 @@
 	  fart: [50, 50, 10, 10, 1, 1],
 	  jump: [150, 30, 15, 20, 0.5],
 	  bounce: [260, -60, 15, 15, 0.5, 2],
-	  pew: [920, -80, 20, 15, 0.2],
-	  zap: [500, -200, 40, 10, 0.25, 0.3]
+	  pew: [920, -80, 20, 15, 0.2, 0],
+	  zap: [500, -200, 40, 10, 0.25, 0]
 	};
 
 /***/ },
@@ -950,6 +950,8 @@
 
 	      this.curtain = g.h;
 
+	      this.touches = 0;
+
 	      this.bunny = g.spawn('bunny', { x: 120, y: 400 });
 
 	      this.addText('HALP!', 50);
@@ -978,6 +980,14 @@
 	  }, {
 	    key: 'update',
 	    value: function update(step) {
+	      var i = this.g.input.keys;
+	      if (i.r || i.l) {
+	        this.touches += 1;
+	      }
+	      if (this.touches > 10) {
+	        this.g.changeState('main');
+	      }
+
 	      if (this.curtain > 1) {
 	        this.curtain -= 9;
 	      }
@@ -1059,7 +1069,8 @@
 	      this.g.addEvent({
 	        time: delay,
 	        cb: function cb() {
-	          _this2.g.sfx.play(_this2.g.H.rndArray(_this2.sounds));
+	          var sfx = _this2.g.H.rndArray(_this2.sounds);
+	          _this2.g.sfx.play(sfx);
 	          _this2.g.spawn('text', { x: 100, y: 310, scale: 5, text: text, col: 4 });
 	          _this2.bunny.flip.x = _this2.bunny.flip.x ? 0 : 1;
 	        }
@@ -1313,6 +1324,9 @@
 	    this.cx = 0;
 	    this.cy = 0;
 
+	    this.tick = 0;
+	    this.waves = 0;
+
 	    var water2 = g.draw.resize(g.imgs['water2'], this.scale);
 	    var water3 = g.draw.flip(water2, 1, 1);
 
@@ -1364,6 +1378,11 @@
 	    key: 'update',
 	    value: function update(step) {
 	      this.cy += ~~(this.p.speed * step);
+	      this.tick += 1;
+	      if (this.tick > 1000) {
+	        this.tick = 0;
+	      }
+	      this.waves = Math.floor(this.tick / 40) % 2 ? 0 : 1;
 
 	      if (this.cy > this.tileDim) {
 	        this.data.shift();
@@ -1374,6 +1393,8 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this = this;
+
 	      var x = 0,
 	          y = this.cy,
 	          g = this.g,
@@ -1390,20 +1411,18 @@
 	      for (var i = 0; i < h; i += 1) {
 	        var row = this.data[this.data.length - i - 1];
 	        x = 0;
-	        // console.log(row, i);
 	        row.forEach(function (cell) {
 	          if (cell) {
-	            try {
-	              ctx.drawImage(tiles[cell], x, y);
-	              if (cell === 6) {
-	                if (Math.random() > 0.95) {
-	                  var pos = g.H.rnd(wh / 4, wh - wh / 4);
-	                  ctx.fillStyle = '#fff';
-	                  ctx.fillRect(x + pos, y + pos, 8, 4);
-	                }
+	            ctx.drawImage(tiles[cell], x, y);
+	            if (_this.waves === 1 && (cell === 8 || cell === 7)) {
+	              // ctx.fillStyle = '#31a2f2';
+	              // ctx.fillRect(x, y, wh, wh);
+	            } else if (cell === 6) {
+	              if (Math.random() > 0.95) {
+	                var pos = g.H.rnd(wh / 4, wh - wh / 4);
+	                ctx.fillStyle = '#fff';
+	                ctx.fillRect(x + pos, y + pos, 8, 4);
 	              }
-	            } catch (e) {
-	              // console.log(tiles[cell], e);
 	            }
 	          }
 	          x += wh;
@@ -2114,7 +2133,7 @@
 	      fly: { frames: [1, 2], rate: 0.01 }
 	    };
 	    _this.changeAnim('fly');
-	    _this.range = g.H.rnd(1, 6) / 1000;
+	    _this.range = g.H.rnd(1, 3) / 1000;
 	    return _this;
 	  }
 
@@ -2442,7 +2461,9 @@
 	        _d$ = _d[5],
 	        _type = _d$ === undefined ? 0 : _d$;
 
+	    console.log(_type);
 	    var osc = soundContext.createOscillator(); // instantiate oscillator
+	    _type = _type === undefined ? 0 : _type;
 	    osc.frequency.value = _freq;
 	    osc.type = oscTypes[_type];
 
@@ -2454,7 +2475,6 @@
 	    osc.start();
 
 	    var i = 0;
-	    // const interval = rInterval(playTune, _delay);
 	    var interval = _interval(playTune, _delay);
 
 	    function playTune() {
@@ -2463,6 +2483,7 @@
 	      i += 1;
 	      if (i > _times) {
 	        interval.clear();
+	        osc.stop();
 	      }
 	    }
 	  }
