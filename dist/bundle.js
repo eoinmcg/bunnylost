@@ -1176,13 +1176,6 @@
 	          this.g.spawn('text', { x: 40, y: 150, scale: 6, text: 'NEW HISCORE', col: 5, accel: 0.2, fade: 0.001 });
 	          this.g.hiScore = this.g.score;
 	        }
-	        if (this.gameOver === 0) {
-	          try {
-	            texta_close();
-	          } catch (e) {
-	            // console.log(e);
-	          }
-	        }
 	        this.speed = 0;
 	        this.gameOver += 1;
 	        if (g.input.click && this.gameOver > 75) {
@@ -1219,15 +1212,6 @@
 	        case 0:
 
 	          break;
-	      }
-
-	      if (g.score >= 99) {
-	        try {
-	          g.changeState('win');
-	          texta_win();
-	        } catch (e) {
-	          // console.log(e);
-	        }
 	      }
 	    }
 	  }, {
