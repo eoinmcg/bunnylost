@@ -42,5 +42,4 @@ export class Boom extends Sprite {
       g.draw.ctx.globalAlpha = 1;
     }
   }
-
 }

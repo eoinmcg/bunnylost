@@ -60,32 +60,34 @@
 
 	var _main = __webpack_require__(12);
 
-	var _p = __webpack_require__(17);
+	var _win = __webpack_require__(17);
 
-	var _carrot = __webpack_require__(19);
+	var _p = __webpack_require__(18);
 
-	var _hog = __webpack_require__(20);
+	var _carrot = __webpack_require__(20);
 
-	var _hornet = __webpack_require__(21);
+	var _hog = __webpack_require__(21);
 
-	var _bat = __webpack_require__(22);
+	var _hornet = __webpack_require__(22);
 
-	var _text = __webpack_require__(23);
+	var _bat = __webpack_require__(23);
 
-	var _boom = __webpack_require__(24);
+	var _text = __webpack_require__(24);
 
-	var _bunny = __webpack_require__(25);
+	var _boom = __webpack_require__(25);
 
-	var _fade = __webpack_require__(26);
+	var _bunny = __webpack_require__(26);
 
-	var _soundfx = __webpack_require__(27);
+	var _fade = __webpack_require__(27);
+
+	var _soundfx = __webpack_require__(28);
 
 	var _soundfx2 = _interopRequireDefault(_soundfx);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var options = _base2.default;
-	options.states = { title: _title.Title, main: _main.Main, intro: _intro.Intro };
+	options.states = { title: _title.Title, main: _main.Main, intro: _intro.Intro, win: _win.Win };
 	options.ents = { p1: _p.P1, carrot: _carrot.Carrot, text: _text.Text, hog: _hog.Hog, hornet: _hornet.Hornet, bat: _bat.Bat, boom: _boom.Boom, bunny: _bunny.Bunny, fade: _fade.Fade };
 	options.SoundFX = _soundfx2.default;
 
@@ -382,7 +384,8 @@
 	  this.resize = function () {
 	    var winH = window.innerHeight,
 	        ratio = this.w / this.h,
-	        w2 = winH * ratio;
+	        w2 = winH * ratio,
+	        fullScreen = !window.screenTop && !window.screenY;
 
 	    this.c.width = this.w;
 	    this.c.height = this.h;
@@ -392,6 +395,12 @@
 
 	    this.c.style.width = ~~w2 + 'px';
 	    this.c.style.height = ~~winH + 'px';
+
+	    if (fullScreen) {
+	      this.c.classList.add('fullscreen');
+	    } else {
+	      this.c.classList.remove('fullscreen');
+	    }
 	  };
 
 	  window.addEventListener('resize', function () {
@@ -583,8 +592,6 @@
 	  this.c = canvas;
 	  this.g = g;
 	  this.click = 0;
-	  this.x = 0;
-	  this.y = 0;
 
 	  this.keys = { l: 0, r: 0 };
 
@@ -602,13 +609,13 @@
 	  });
 
 	  l('touchstart', function (e) {
+	    e.preventDefault();
 	    _this.click = true;
 	    _this.trackTouch(e.touches);
 	  });
 
 	  l('touchmove', function (e) {
-	    _this.preventDefault();
-	    _this.trackTouch(e.touches);
+	    e.preventDefault();
 	  });
 
 	  l('touchend', function (e) {
@@ -624,7 +631,6 @@
 	        scale = parseInt(c.style.width, 10) / c.width;
 
 	    var x = ~~(touches[0].pageX - offsetX) / scale;
-	    // alert(x + ', ' + c.width);
 
 	    if (x < c.width / 2) {
 	      _this.keys.l = 1;
@@ -740,7 +746,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = { 'bat': 'R0lGODlhEAAIAKECAAAAAL4mMzGi8jGi8iH5BAEKAAIALAAAAAAQAAgAAAIdlGBolysBQHBQuhgvdkfphYVKCIpldnqJunLdUgAAOw==', 'boom': 'R0lGODlhCAAIAIABAP///zGi8iH5BAEKAAEALAAAAAAIAAgAAAIMTIBgl8gNo5wvrWYKADs=', 'carrot': 'R0lGODlhCAAIAKEDAKRkIkSJGuuJMTGi8iH5BAEKAAMALAAAAAAIAAgAAAIS3IJha8oD0gLCGVodXmEz8RgFADs=', 'flower': 'R0lGODlhCAAIAIABAABXhDGi8iH5BAEKAAEALAAAAAAIAAgAAAIJjI+ZoMyrolQFADs=', 'font': 'R0lGODlhjwAFAIABAAAAAP///yH5BAEKAAEALAAAAACPAAUAAAJzDGKHcLzOFDRJ0UbXzdJ2lFQbRo5ipJ1TA7XsW2KanNWyZXpuzuNSz5txQDZTChSrsI6kXfOHDNmcl9+LKXxiU7fHBwV2zFxJzwZbGiazq+kyqua2h0I6vEhLh977Dm1fBaW1BvUwYmYY16UiuDN29VhRAAA7', 'hog': 'R0lGODlhFAAJAKEDAL4mM+Bvi////zGi8iH5BAEKAAMALAAAAAAUAAkAAAIjnI8Ykbc91kuSGTFA0BNrbglVNYjjc6ZpdDqtIjWkQtcWhBQAOw==', 'hornet': 'R0lGODlhBgAHAMIEAEk8K74mM7Lc7/fiazGi8jGi8jGi8jGi8iH5BAEKAAQALAAAAAAGAAcAAAMSSAEQ9GM8IpigIopbwYXSBEwJADs=', 'lilly': 'R0lGODlhCAAIAMIBAESJGjGi8qPOJ7Lc7zGi8jGi8jGi8jGi8iH5BAEKAAQALAAAAAAIAAgAAAMUGLoMDus9JYEYod4s97DCpgwkFiQAOw==', 'mushroom': 'R0lGODlhCAAIAKEDAL4mM+Bvi////zGi8iH5BAEKAAMALAAAAAAIAAgAAAISnI8TkRuAgDtOsmEXPEKk3hkFADs=', 'ouch': 'R0lGODlhCAAIAIABAL4mMzGi8iH5BAEKAAEALAAAAAAIAAgAAAIMTIBgl8gNo5wvrWYKADs=', 'p1': 'R0lGODlhFQAJAMIEAEk8K+Bvi7Lc7////zGi8jGi8jGi8jGi8iH5BAEKAAQALAAAAAAVAAkAAAMzSLrcK+JFqKi1bGYSH99d9VUQxZUdmgoAS7YAWQ5DGUQ1dBO5cPeCGm0W7NU2ntBH2UgAADs=', 'rock': 'R0lGODlhCAAIAKEDAC9ITp2dnf///zGi8iH5BAEKAAMALAAAAAAIAAgAAAITnI+hcRvCgHtBzmoXGCB304VDAQA7', 'skull': 'R0lGODlhBwAGAKECAL4mM////zGi8jGi8iH5BAEKAAIALAAAAAAHAAYAAAIMVH4GEHv8kJzI2CAKADs=', 'splash': 'R0lGODlhCAAIAIABAP///zGi8iH5BAEKAAEALAAAAAAIAAgAAAIMTIBgl8gNo5wvrWYKADs=', 'tile': 'R0lGODlhCAAIAIAAADGi8jGi8iH5BAEKAAEALAAAAAAIAAgAAAIHjI+py+1dAAA7', 'tree': 'R0lGODlhCAAUAIABAAAAADGi8iH5BAEKAAEALAAAAAAIABQAAAIejGF5msjhGohqPstwRXh6qUGaF4qUSX1bqh6kSyIFADs=', 'wall': 'R0lGODlhCAAIAIABAEk8KzGi8iH5BAEKAAEALAAAAAAIAAgAAAILhB15G+sPo2wopQIAOw==', 'water': 'R0lGODlhCAAIAIAAADGi8jGi8iH5BAEKAAEALAAAAAAIAAgAAAIHhI+py+1dAAA7', 'water2': 'R0lGODlhCAAIAKEAADGi8rLc7zGi8jGi8iH5BAEKAAIALAAAAAAIAAgAAAIJhI+py+0QoowFADs=' };
+	exports.default = { 'bat': 'R0lGODlhEAAIAKECAAAAAL4mMzGi8jGi8iH5BAEKAAIALAAAAAAQAAgAAAIdlGBolysBQHBQuhgvdkfphYVKCIpldnqJunLdUgAAOw==', 'boom': 'R0lGODlhDAAMAIABAP///zGi8iH5BAEKAAEALAAAAAAMAAwAAAIWjAMJd+pr3otSoYqz3uli+oET40FGAQA7', 'carrot': 'R0lGODlhCAAIAKEDAKRkIkSJGuuJMTGi8iH5BAEKAAMALAAAAAAIAAgAAAIS3IJha8oD0gLCGVodXmEz8RgFADs=', 'flower': 'R0lGODlhCAAIAIABAABXhDGi8iH5BAEKAAEALAAAAAAIAAgAAAIJjI+ZoMyrolQFADs=', 'font': 'R0lGODlhjwAFAIABAAAAAP///yH5BAEKAAEALAAAAACPAAUAAAJzDGKHcLzOFDRJ0UbXzdJ2lFQbRo5ipJ1TA7XsW2KanNWyZXpuzuNSz5txQDZTChSrsI6kXfOHDNmcl9+LKXxiU7fHBwV2zFxJzwZbGiazq+kyqua2h0I6vEhLh977Dm1fBaW1BvUwYmYY16UiuDN29VhRAAA7', 'hog': 'R0lGODlhFAAJAKEDAL4mM+Bvi////zGi8iH5BAEKAAMALAAAAAAUAAkAAAIjnI8Ykbc91kuSGTFA0BNrbglVNYjjc6ZpdDqtIjWkQtcWhBQAOw==', 'hornet': 'R0lGODlhBgAHAMIEAEk8K74mM7Lc7/fiazGi8jGi8jGi8jGi8iH5BAEKAAQALAAAAAAGAAcAAAMSSAEQ9GM8IpigIopbwYXSBEwJADs=', 'lilly': 'R0lGODlhCAAIAMIBAESJGjGi8qPOJ7Lc7zGi8jGi8jGi8jGi8iH5BAEKAAQALAAAAAAIAAgAAAMUGLoMDus9JYEYod4s97DCpgwkFiQAOw==', 'mushroom': 'R0lGODlhCAAIAKEDAL4mM+Bvi////zGi8iH5BAEKAAMALAAAAAAIAAgAAAISnI8TkRuAgDtOsmEXPEKk3hkFADs=', 'ouch': 'R0lGODlhCAAIAIABAL4mMzGi8iH5BAEKAAEALAAAAAAIAAgAAAIMTIBgl8gNo5wvrWYKADs=', 'p1': 'R0lGODlhFQAJAMIEAEk8K+Bvi7Lc7////zGi8jGi8jGi8jGi8iH5BAEKAAQALAAAAAAVAAkAAAMzSLrcK+JFqKi1bGYSH99d9VUQxZUdmgoAS7YAWQ5DGUQ1dBO5cPeCGm0W7NU2ntBH2UgAADs=', 'rock': 'R0lGODlhCAAIAKEDAC9ITp2dnf///zGi8iH5BAEKAAMALAAAAAAIAAgAAAITnI+hcRvCgHtBzmoXGCB304VDAQA7', 'skull': 'R0lGODlhBwAGAKECAL4mM////zGi8jGi8iH5BAEKAAIALAAAAAAHAAYAAAIMVH4GEHv8kJzI2CAKADs=', 'tile': 'R0lGODlhCAAIAIAAADGi8jGi8iH5BAEKAAEALAAAAAAIAAgAAAIHjI+py+1dAAA7', 'tree': 'R0lGODlhCAAUAIABAAAAADGi8iH5BAEKAAEALAAAAAAIABQAAAIejGF5msjhGohqPstwRXh6qUGaF4qUSX1bqh6kSyIFADs=', 'wall': 'R0lGODlhCAAIAIABAEk8KzGi8iH5BAEKAAEALAAAAAAIAAgAAAILhB15G+sPo2wopQIAOw==', 'water': 'R0lGODlhCAAIAIAAADGi8jGi8iH5BAEKAAEALAAAAAAIAAgAAAIHhI+py+1dAAA7', 'water2': 'R0lGODlhCAAIAKEAADGi8rLc7zGi8jGi8iH5BAEKAAIALAAAAAAIAAgAAAIJhI+py+0QoowFADs=' };
 
 /***/ },
 /* 9 */
@@ -799,10 +805,11 @@
 
 	      this.moon = {};
 	      this.moon.x = 50;
-	      this.moon.y = g.h * 2;
-	      this.moon.targetY = 10;
+	      this.moon.y = -250;
+	      this.moon.targetY = 40;
+	      this.moonDist = 0;
 
-	      this.sMoon = g.draw.color(g.imgs['splash'], g.options.pal[7], true);
+	      this.sMoon = g.draw.color(g.imgs['boom'], g.options.pal[7], true);
 	    }
 	  }, {
 	    key: 'update',
@@ -832,19 +839,27 @@
 	        }
 	      }
 
-	      if (g.input.click && this.moon.y === this.moon.targetY && !g.transition) {
+	      if (g.input.click && this.moonDist < 25 && !g.transition) {
+	        var plays = 0;
+	        try {
+	          plays = window.sessionStorage.getItem('plays') || 0;
+	          plays = parseInt(plays, 10);
+	        } catch (e) {
+	          // console.log(e);
+	        }
+	        var nextState = plays > 0 ? 'main' : 'intro';
 	        g.transition = new g.availEnts['fade']({
 	          g: g,
 	          col: 0,
 	          y: 0,
 	          targetY: g.h,
-	          changeTo: 'intro'
+	          changeTo: nextState
 	        });
 	      }
 
 	      var time = 750;
-	      var dist = this.moon.targetY - this.moon.y;
-	      this.moon.y = ~~g.H.tween(33, this.moon.y, dist, time);
+	      this.moonDist = this.moon.targetY - this.moon.y;
+	      this.moon.y = ~~g.H.tween(33, this.moon.y, this.moonDist, time);
 	    }
 	  }, {
 	    key: 'render',
@@ -876,10 +891,10 @@
 	        }
 	      }
 
-	      g.draw.img(this.sMoon, 50, this.moon.y, 28);
-	      g.draw.img(g.imgs.splash, 50, this.moon.y, 27);
+	      g.draw.img(this.sMoon, 50, this.moon.y, 19);
+	      g.draw.img(g.imgs.boom, 50, this.moon.y, 18);
 
-	      if (this.moon.y === this.moon.targetY) {
+	      if (this.moonDist < 25) {
 	        g.draw.ctx.globalAlpha = 0.5;
 	        g.draw.text('BUNNY', this.Sfont, false, 85);
 	        g.draw.text('LOST', this.Sfont2, false, 120);
@@ -907,7 +922,7 @@
 	      g.draw.img(g.imgs.tree, 300, 380, 4);
 	      g.draw.ctx.globalAlpha = 1;
 
-	      if (g.fader > 0 && this.moon.y === this.moon.targetY) {
+	      if (g.fader > 0 && this.moonDist < 25) {
 	        g.draw.text(g.mobile ? 'TAP TO PLAY' : 'L OR R CURSORS', this.font3, false, 400);
 	      }
 	    }
@@ -947,12 +962,10 @@
 	      this.font = g.H.mkFont(g, 5, 10);
 	      this.font2 = g.H.mkFont(g, 7, 10);
 	      this.font3 = g.H.mkFont(g, 4, 6);
+	      this.skipFont = g.H.mkFont(g, 5, 7);
 
 	      this.curtain = g.h;
-
-	      this.touches = 0;
-
-	      this.bunny = g.spawn('bunny', { x: 120, y: 400 });
+	      this.bunny = g.spawn('bunny', { x: 120, y: 350 });
 
 	      this.addText('HALP!', 50);
 	      this.addText('I AM', 150);
@@ -976,15 +989,12 @@
 	        }
 	      });
 	      this.sounds = ['step', 'pew', 'zap', 'fart'];
+	      window.i = this.i;
 	    }
 	  }, {
 	    key: 'update',
 	    value: function update(step) {
-	      var i = this.g.input.keys;
-	      if (i.r || i.l) {
-	        this.touches += 1;
-	      }
-	      if (this.touches > 10) {
+	      if (this.g.input.keys.r) {
 	        this.g.changeState('main');
 	      }
 
@@ -1023,13 +1033,15 @@
 	      g.draw.clear(g.options.pal[10]);
 
 	      g.draw.ctx.globalAlpha = 0.5;
-	      g.draw.img(g.imgs.tree, 40, 300, 8);
-	      g.draw.img(g.imgs.tree, 290, 400, 3);
-	      g.draw.img(g.imgs.tree, 220, 380, 6);
+	      g.draw.img(g.imgs.tree, 40, 260, 8);
+	      g.draw.img(g.imgs.tree, 290, 360, 3);
+	      g.draw.img(g.imgs.tree, 220, 340, 6);
 	      g.draw.ctx.globalAlpha = 1;
 
-	      g.draw.rect(0, g.h - 20, g.w, 20, g.options.pal[9]);
-	      g.draw.img(g.imgs.splash, 50, 0, 27);
+	      g.draw.rect(0, g.h - 60, g.w, 60, g.options.pal[9]);
+	      g.draw.rect(0, g.h - 60, g.w, 10, g.options.pal[8]);
+	      g.draw.img(g.imgs.boom, 50, 10, 20);
+	      g.draw.text('SKIP', this.skipFont, g.w - 90, g.h - 34);
 	      var _iteratorNormalCompletion2 = true;
 	      var _didIteratorError2 = false;
 	      var _iteratorError2 = undefined;
@@ -1164,10 +1176,22 @@
 	          this.g.spawn('text', { x: 40, y: 150, scale: 6, text: 'NEW HISCORE', col: 5, accel: 0.2, fade: 0.001 });
 	          this.g.hiScore = this.g.score;
 	        }
+	        if (this.gameOver === 0) {
+	          try {
+	            texta_close();
+	          } catch (e) {
+	            // console.log(e);
+	          }
+	        }
 	        this.speed = 0;
 	        this.gameOver += 1;
 	        if (g.input.click && this.gameOver > 75) {
 	          g.plays += 1;
+	          try {
+	            window.sessionStorage.setItem('plays', g.plays);
+	          } catch (e) {
+	            // console.log(e);
+	          }
 	          g.changeState('main');
 	        }
 	        return;
@@ -1187,7 +1211,7 @@
 	          if (!this.p1.isMoving()) {
 	            this.p1.kill();
 	            this.g.sfx.play('pew');
-	            g.spawn('boom', { x: this.p1.x, y: this.p1.y, i: 'splash' });
+	            g.spawn('boom', { x: this.p1.x, y: this.p1.y, i: 'boom', magnitude: 32 });
 	          }
 	          break;
 	        case 2:
@@ -1195,6 +1219,15 @@
 	        case 0:
 
 	          break;
+	      }
+
+	      if (g.score >= 99) {
+	        try {
+	          g.changeState('win');
+	          texta_win();
+	        } catch (e) {
+	          // console.log(e);
+	        }
 	      }
 	    }
 	  }, {
@@ -1230,9 +1263,11 @@
 	      g.draw.rect(0, 0, g.w, 32, g.options.pal[0]);
 	      g.draw.rect(0, 32, g.w, 4, g.options.pal[0], 0.3);
 
-	      g.draw.text(g.score, this.font, 35, 6);
-	      g.draw.text('HI ', this.font, g.w - 130, 6);
-	      g.draw.text(g.hiScore, this.font, g.w - 90, 6);
+	      g.draw.text(g.score, this.font, 75, 6);
+	      g.draw.text('HI ', this.font, g.w - 100, 6);
+	      g.draw.text(g.hiScore, this.font, g.w - 50, 6);
+	      // backbutton pos
+	      // g.draw.rect(0, 0, 50, 50, g.options.pal[7], 1)
 
 	      if (this.p1.dead) {
 	        g.draw.rect(0, 180, this.gameOver * 10, 160, g.options.pal[6], 0.8);
@@ -1594,6 +1629,144 @@
 
 /***/ },
 /* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Win = exports.Win = function () {
+	  function Win(g) {
+	    _classCallCheck(this, Win);
+
+	    this.g = g;
+	  }
+
+	  _createClass(Win, [{
+	    key: 'init',
+	    value: function init() {
+	      var _this = this;
+
+	      var g = this.g;
+
+	      this.curtain = g.h;
+
+	      this.font = g.H.mkFont(g, 7, 5);
+	      this.dings = 0;
+	      this.tick = 0;
+
+	      this.sun = {};
+	      this.sun.x = 50;
+	      this.sun.y = g.h * 2;
+	      this.sun.targetY = 10;
+
+	      this.sunImg = g.draw.color(g.imgs['boom'], g.options.pal[7], true);
+	      this.flower = g.draw.color(g.imgs['flower'], g.options.pal[3], true);
+	      this.flower2 = g.draw.color(g.imgs['flower'], g.options.pal[6], true);
+
+	      this.g.addEvent({
+	        time: 1000,
+	        cb: function cb() {
+	          _this.g.changeState('title');
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update(step) {
+	      var g = this.g;
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = g.ents[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var n = _step.value;
+	          n.update(step);
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      this.tick += 1;
+	      if (this.tick % 30 === 0 && this.dings < 3) {
+	        this.dings += 1;
+	        g.sfx.play(this.dings === 3 ? 'fart' : 'coin');
+	      }
+
+	      var time = 350;
+	      var dist = this.sun.targetY - this.sun.y;
+	      this.sun.y = ~~g.H.tween(33, this.sun.y, dist, time);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render(step) {
+	      var g = this.g;
+
+	      g.draw.clear(g.options.pal[12]);
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+
+	      try {
+	        for (var _iterator2 = this.g.ents[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var n = _step2.value;
+	          n.render(step);
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+
+	      g.draw.img(this.sunImg, 50, this.sun.y, 20);
+
+	      g.draw.text('YOU', this.font, false, 80);
+	      g.draw.text('WIN', this.font, false, 120);
+
+	      g.draw.rect(0, 436, g.w, g.h, g.options.pal[8]);
+	      g.draw.rect(0, 440, g.w, g.h, g.options.pal[9]);
+
+	      g.draw.img(this.flower, 50, 450, 5);
+	      g.draw.img(this.flower2, 150, 440, 4);
+	      g.draw.img(this.flower, 250, 430, 6);
+
+	      g.draw.ctx.globalAlpha = 0.5;
+	      g.draw.ctx.globalAlpha = 1;
+	    }
+	  }]);
+
+	  return Win;
+	}();
+
+/***/ },
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1607,7 +1780,7 @@
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1744,7 +1917,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1898,7 +2071,7 @@
 	;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1910,7 +2083,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1946,7 +2119,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1960,7 +2133,7 @@
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2025,7 +2198,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2039,7 +2212,7 @@
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2090,7 +2263,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2104,7 +2277,7 @@
 
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2159,7 +2332,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2227,7 +2400,7 @@
 	}();
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2239,7 +2412,7 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2304,7 +2477,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2314,7 +2487,7 @@
 	});
 	exports.Bunny = undefined;
 
-	var _sprite = __webpack_require__(18);
+	var _sprite = __webpack_require__(19);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2345,7 +2518,7 @@
 	}(_sprite.Sprite);
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2396,7 +2569,7 @@
 	}();
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2461,7 +2634,6 @@
 	        _d$ = _d[5],
 	        _type = _d$ === undefined ? 0 : _d$;
 
-	    console.log(_type);
 	    var osc = soundContext.createOscillator(); // instantiate oscillator
 	    _type = _type === undefined ? 0 : _type;
 	    osc.frequency.value = _freq;

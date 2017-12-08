@@ -4,6 +4,7 @@ import Data from './data/base';
 import {Title} from './states/title';
 import {Intro} from './states/intro';
 import {Main} from './states/main';
+import {Win} from './states/win';
 
 import {P1} from './entities/p1';
 import {Carrot} from './entities/carrot';
@@ -18,7 +19,7 @@ import {Fade} from './entities/fade';
 import SoundFX from '../lib/soundfx';
 
 const options = Data;
-options.states = {title : Title, main: Main, intro: Intro};
+options.states = {title : Title, main: Main, intro: Intro, win: Win};
 options.ents = {p1: P1, carrot: Carrot, text: Text, hog: Hog, hornet: Hornet, bat: Bat, boom: Boom, bunny: Bunny, fade: Fade};
 options.SoundFX = SoundFX;
 

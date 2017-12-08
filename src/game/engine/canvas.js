@@ -14,7 +14,8 @@ export default function Canvas(w, h) {
   this.resize = function() {
     let winH = window.innerHeight,
       ratio = this.w / this.h,
-      w2 = winH * ratio;
+      w2 = winH * ratio,
+      fullScreen = !window.screenTop && !window.screenY;
 
     this.c.width = this.w;
     this.c.height = this.h;
@@ -24,6 +25,12 @@ export default function Canvas(w, h) {
 
     this.c.style.width = ~~(w2)+ 'px';
     this.c.style.height = ~~(winH) + 'px';
+
+    if (fullScreen) {
+      this.c.classList.add('fullscreen');
+    } else {
+      this.c.classList.remove('fullscreen');
+    }
 
   };
 

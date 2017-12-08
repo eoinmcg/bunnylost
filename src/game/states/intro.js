@@ -12,12 +12,10 @@ export class Intro {
     this.font = g.H.mkFont(g, 5, 10);
     this.font2 = g.H.mkFont(g, 7, 10);
     this.font3 = g.H.mkFont(g, 4, 6);
+    this.skipFont = g.H.mkFont(g, 5, 7);
 
     this.curtain = g.h;
-
-    this.touches = 0;
-
-    this.bunny = g.spawn('bunny', {x: 120, y: 400});
+    this.bunny = g.spawn('bunny', {x: 120, y: 350});
 
     this.addText('HALP!', 50);
     this.addText('I AM', 150);
@@ -41,14 +39,11 @@ export class Intro {
       }
     });
     this.sounds = ['step', 'pew', 'zap', 'fart'];
+    window.i = this.i;
   }
 
   update(step) {
-    let i = this.g.input.keys;
-    if (i.r || i.l) {
-      this.touches += 1;
-    }
-    if (this.touches > 10) {
+    if (this.g.input.keys.r) {
         this.g.changeState('main');
     }
 
@@ -64,13 +59,15 @@ export class Intro {
     g.draw.clear(g.options.pal[10]);
 
     g.draw.ctx.globalAlpha = 0.5;
-    g.draw.img(g.imgs.tree, 40, 300, 8);
-    g.draw.img(g.imgs.tree, 290, 400, 3);
-    g.draw.img(g.imgs.tree, 220, 380, 6);
+    g.draw.img(g.imgs.tree, 40, 260, 8);
+    g.draw.img(g.imgs.tree, 290, 360, 3);
+    g.draw.img(g.imgs.tree, 220, 340, 6);
     g.draw.ctx.globalAlpha = 1;
 
-    g.draw.rect(0, g.h - 20, g.w, 20, g.options.pal[9]);
-    g.draw.img(g.imgs.splash, 50, 0, 27);
+    g.draw.rect(0, g.h - 60, g.w, 60, g.options.pal[9]);
+    g.draw.rect(0, g.h - 60, g.w, 10, g.options.pal[8]);
+    g.draw.img(g.imgs.boom, 50, 10, 20);
+    g.draw.text('SKIP', this.skipFont, g.w - 90, g.h - 34);
     for (let n of this.g.ents) { n.render(step); }
     if (this.curtain) {
       g.draw.rect(0, 0,g.w, this.curtain, g.options.pal[0]);

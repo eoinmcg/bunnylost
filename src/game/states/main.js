@@ -39,10 +39,22 @@ export class Main {
         this.g.spawn('text', {x: 40, y: 150, scale: 6, text:'NEW HISCORE', col: 5, accel: 0.2, fade: 0.001});
         this.g.hiScore = this.g.score;
       }
+      if (this.gameOver === 0) {
+        try {
+          texta_close();
+        } catch (e) {
+          // console.log(e);
+        }
+      }
       this.speed = 0;
       this.gameOver += 1;
       if (g.input.click && this.gameOver > 75) {
         g.plays += 1;
+        try {
+          window.sessionStorage.setItem('plays', g.plays);
+        } catch (e) {
+          // console.log(e);
+        }
         g.changeState('main');
       }
       return;
@@ -62,7 +74,7 @@ export class Main {
         if (!this.p1.isMoving()) {
           this.p1.kill();
           this.g.sfx.play('pew');
-          g.spawn('boom', {x: this.p1.x, y: this.p1.y, i: 'splash'});
+          g.spawn('boom', {x: this.p1.x, y: this.p1.y, i: 'boom', magnitude: 32});
         }
         break;
       case 2:
@@ -70,6 +82,15 @@ export class Main {
       case 0:
 
         break;
+    }
+
+    if (g.score >= 99) {
+        try {
+          g.changeState('win');
+          texta_win();
+        } catch (e) {
+          // console.log(e);
+        }
     }
   }
 
@@ -81,9 +102,11 @@ export class Main {
     g.draw.rect(0, 0, g.w, 32, g.options.pal[0])
     g.draw.rect(0, 32, g.w, 4, g.options.pal[0], 0.3)
 
-    g.draw.text(g.score, this.font, 35, 6);
-    g.draw.text('HI ', this.font, g.w - 130, 6);
-    g.draw.text(g.hiScore, this.font, g.w - 90, 6);
+    g.draw.text(g.score, this.font, 75, 6);
+    g.draw.text('HI ', this.font, g.w - 100, 6);
+    g.draw.text(g.hiScore, this.font, g.w - 50, 6);
+    // backbutton pos
+    // g.draw.rect(0, 0, 50, 50, g.options.pal[7], 1)
 
     if (this.p1.dead) {
       g.draw.rect(0, 180, this.gameOver * 10, 160, g.options.pal[6], 0.8)

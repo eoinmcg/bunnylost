@@ -20,28 +20,37 @@ export class Title {
 
     this.moon = {};
     this.moon.x = 50;
-    this.moon.y = g.h * 2;
-    this.moon.targetY = 10;
+    this.moon.y = -250;
+    this.moon.targetY = 40;
+    this.moonDist = 0;
 
-    this.sMoon = g.draw.color(g.imgs['splash'], g.options.pal[7], true);
+    this.sMoon = g.draw.color(g.imgs['boom'], g.options.pal[7], true);
   }
 
   update(step) {
     const g = this.g;
     for (let n of g.ents) { n.update(step); }
-    if (g.input.click && this.moon.y === this.moon.targetY && !g.transition) {
+    if (g.input.click && this.moonDist < 25 && !g.transition) {
+      let plays = 0;
+      try {
+        plays = window.sessionStorage.getItem('plays') || 0;
+        plays = parseInt(plays, 10);
+      } catch (e) {
+        // console.log(e);
+      }
+      const nextState =(plays > 0) ? 'main' : 'intro';
       g.transition = new g.availEnts['fade']({
         g: g,
         col: 0,
         y: 0,
         targetY: g.h,
-        changeTo: 'intro'
+        changeTo: nextState
       });
     }
 
     let time = 750;
-    let dist = this.moon.targetY - this.moon.y;
-    this.moon.y = ~~g.H.tween(33, this.moon.y, dist, time)
+    this.moonDist = this.moon.targetY - this.moon.y;
+    this.moon.y = ~~g.H.tween(33, this.moon.y, this.moonDist, time)
   }
 
   render(step) {
@@ -50,10 +59,10 @@ export class Title {
     g.draw.clear(g.options.pal[10]);
     for (let n of this.g.ents) { n.render(step); }
 
-    g.draw.img(this.sMoon, 50, this.moon.y, 28);
-    g.draw.img(g.imgs.splash, 50, this.moon.y, 27);
+    g.draw.img(this.sMoon, 50, this.moon.y, 19);
+    g.draw.img(g.imgs.boom, 50, this.moon.y, 18);
 
-    if (this.moon.y === this.moon.targetY) {
+    if (this.moonDist < 25) {
       g.draw.ctx.globalAlpha = 0.5;
       g.draw.text('BUNNY', this.Sfont, false, 85);
       g.draw.text('LOST', this.Sfont2, false, 120);
@@ -81,9 +90,8 @@ export class Title {
     g.draw.img(g.imgs.tree, 300, 380, 4);
     g.draw.ctx.globalAlpha = 1;
 
-    if (g.fader > 0 && this.moon.y === this.moon.targetY) {
+    if (g.fader > 0 && this.moonDist < 25) {
       g.draw.text(g.mobile ? 'TAP TO PLAY' : 'L OR R CURSORS', this.font3, false, 400);
     }
-
   }
 }
