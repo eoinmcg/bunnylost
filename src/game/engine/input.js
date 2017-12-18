@@ -21,17 +21,17 @@ export default function Input(canvas, g) {
   });
 
   l('touchstart', (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     this.click = true;
     this.trackTouch(e.touches);
   });
 
   l('touchmove', (e) => {
-    e.preventDefault();
+    // e.preventDefault();
   });
 
   l('touchend', (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     this.trackTouch(e.touches);
     this.click = false;
   });
@@ -42,6 +42,7 @@ export default function Input(canvas, g) {
       offsetX = c.offsetLeft,
       scale = parseInt(c.style.width, 10) / c.width;
 
+    if (!touches || !touches[0]) { return; }
     const x = ~~(touches[0].pageX - offsetX) / scale;
 
     if (x < c.width / 2) {

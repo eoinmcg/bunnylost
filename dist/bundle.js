@@ -188,7 +188,21 @@
 	      _this.canvas.c.style.display = 'block';
 	      _this.favIcon(_this.draw.resize(_this.imgs.carrot, 8));
 	      _this.loop();
+	      // this.goFullScreen();
 	    });
+	  };
+
+	  this.goFullScreen = function () {
+	    var c = document.querySelector('canvas');
+	    if (c.requestFullscreen) {
+	      c.requestFullscreen();
+	    } else if (c.webkitRequestFullscreen) {
+	      c.webkitRequestFullscreen();
+	    } else if (c.mozRequestFullScreen) {
+	      c.mozRequestFullScreen();
+	    } else if (c.msRequestFullscreen) {
+	      c.msRequestFullscreen();
+	    }
 	  };
 
 	  this.makeFonts = function (f) {
@@ -369,7 +383,7 @@
 	});
 	exports.default = Canvas;
 	function Canvas(w, h) {
-	  var _this = this;
+	  var _this2 = this;
 
 	  this.w = w;
 	  this.h = h;
@@ -382,10 +396,32 @@
 	  this.c.style.height = h + 'px';
 
 	  this.resize = function () {
+	    var gameArea = document.querySelector('canvas');
+	    var widthToHeight = this.w / this.h;
+	    var newWidth = window.innerWidth;
+	    var newHeight = window.innerHeight;
+	    var newWidthToHeight = newWidth / newHeight;
+
+	    if (newWidthToHeight > widthToHeight) {
+	      newWidth = newHeight * widthToHeight;
+	      this.c.style.height = newHeight + 'px';
+	      this.c.style.width = newWidth + 'px';
+	    } else {
+	      newHeight = newWidth / widthToHeight;
+	      this.c.style.width = newWidth + 'px';
+	      this.c.style.height = newHeight + 'px';
+	    }
+
+	    this.c.style.marginTop = -newHeight / 2 + 'px';
+	    this.c.style.marginLeft = -newWidth / 2 + 'px';
+	  };
+
+	  this._resize = function () {
 	    var winH = window.innerHeight,
+	        winW = window.innerWidth,
 	        ratio = this.w / this.h,
 	        w2 = winH * ratio,
-	        fullScreen = !window.screenTop && !window.screenY;
+	        h2 = winW * ratio;
 
 	    this.c.width = this.w;
 	    this.c.height = this.h;
@@ -395,18 +431,25 @@
 
 	    this.c.style.width = ~~w2 + 'px';
 	    this.c.style.height = ~~winH + 'px';
+	  };
 
-	    if (fullScreen) {
-	      this.c.classList.add('fullscreen');
-	    } else {
-	      this.c.classList.remove('fullscreen');
-	    }
+	  this.delayedResize = function () {
+	    var _this = this;
+
+	    var delay = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
+
+	    window.setTimeout(function () {
+	      _this.resize();
+	    }, delay);
 	  };
 
 	  window.addEventListener('resize', function () {
-	    _this.resize();
+	    _this2.delayedResize();
 	  });
-	  this.resize();
+	  window.addEventListener('fullscreenchange', function () {
+	    _this2.delayedResize(150);
+	  });
+	  this.delayedResize(500);
 
 	  return {
 	    c: this.c,
@@ -609,17 +652,17 @@
 	  });
 
 	  l('touchstart', function (e) {
-	    e.preventDefault();
+	    // e.preventDefault();
 	    _this.click = true;
 	    _this.trackTouch(e.touches);
 	  });
 
 	  l('touchmove', function (e) {
-	    e.preventDefault();
+	    // e.preventDefault();
 	  });
 
 	  l('touchend', function (e) {
-	    e.preventDefault();
+	    // e.preventDefault();
 	    _this.trackTouch(e.touches);
 	    _this.click = false;
 	  });
@@ -630,6 +673,9 @@
 	        offsetX = c.offsetLeft,
 	        scale = parseInt(c.style.width, 10) / c.width;
 
+	    if (!touches || !touches[0]) {
+	      return;
+	    }
 	    var x = ~~(touches[0].pageX - offsetX) / scale;
 
 	    if (x < c.width / 2) {
@@ -1177,11 +1223,13 @@
 	          this.g.hiScore = this.g.score;
 	        }
 	        if (this.gameOver === 0) {
-	          try {
-	            texta_close();
-	          } catch (e) {
-	            // console.log(e);
-	          }
+	          setTimeout(function () {
+	            try {
+	              texta_close();
+	            } catch (e) {
+	              console.log(e);
+	            }
+	          }, 750);
 	        }
 	        this.speed = 0;
 	        this.gameOver += 1;
@@ -1280,6 +1328,7 @@
 	      if (this.curtain) {
 	        g.draw.rect(0, 0, g.w, this.curtain, g.options.pal[0]);
 	      }
+	      // g.draw.rect(this.p1.x, this.p1.y, 1, 1, g.options.pal[4])
 	    }
 	  }, {
 	    key: 'helpText',
@@ -1443,15 +1492,19 @@
 	          wh = this.tileDim,
 	          ripple = void 0;
 
+	      var col = 1;
 	      for (var i = 0; i < h; i += 1) {
 	        var row = this.data[this.data.length - i - 1];
 	        x = 0;
 	        row.forEach(function (cell) {
 	          if (cell) {
 	            ctx.drawImage(tiles[cell], x, y);
-	            if (_this.waves === 1 && (cell === 8 || cell === 7)) {
-	              // ctx.fillStyle = '#31a2f2';
-	              // ctx.fillRect(x, y, wh, wh);
+	            if (cell === 7 && _this.waves === 1) {
+	              ctx.fillStyle = '#31a2f2';
+	              ctx.fillRect(x, y, wh, wh);
+	            } else if (cell === 8 && _this.waves !== 1) {
+	              ctx.fillStyle = '#31a2f2';
+	              ctx.fillRect(x, y, wh, wh);
 	            } else if (cell === 6) {
 	              if (Math.random() > 0.95) {
 	                var pos = g.H.rnd(wh / 4, wh - wh / 4);
@@ -1460,6 +1513,8 @@
 	              }
 	            }
 	          }
+	          // ctx.strokeStyle = '#000';
+	          // ctx.strokeRect(x, y, wh, wh);
 	          x += wh;
 	        });
 	        y += wh;
@@ -1871,9 +1926,9 @@
 	      var newX = this.x;
 	      var newY = this.y;
 
-	      if (i.r) {
+	      if (i.r && this.x < 288) {
 	        newX = this.x + tile;
-	      } else if (i.l) {
+	      } else if (i.l && this.x > 0) {
 	        newX = this.x - tile;
 	      }
 

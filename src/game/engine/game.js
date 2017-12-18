@@ -61,8 +61,22 @@ export default function Game(options = {}) {
       this.canvas.c.style.display = 'block';
       this.favIcon(this.draw.resize(this.imgs.carrot, 8));
       this.loop();
+      // this.goFullScreen();
     });
   };
+
+  this.goFullScreen = function() {
+    const c = document.querySelector('canvas');
+    if (c.requestFullscreen) {
+      c.requestFullscreen();
+    } else if (c.webkitRequestFullscreen) {
+      c.webkitRequestFullscreen();
+    } else if (c.mozRequestFullScreen) {
+      c.mozRequestFullScreen();
+    } else if (c.msRequestFullscreen) {
+      c.msRequestFullscreen();
+    }
+  }
 
   this.makeFonts = function(f) {
     let i = 12;

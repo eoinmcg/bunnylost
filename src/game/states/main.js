@@ -40,11 +40,13 @@ export class Main {
         this.g.hiScore = this.g.score;
       }
       if (this.gameOver === 0) {
-        try {
-          texta_close();
-        } catch (e) {
-          // console.log(e);
-        }
+        setTimeout(() => {
+          try {
+            texta_close();
+          } catch (e) {
+            console.log(e);
+          }
+        }, 750);
       }
       this.speed = 0;
       this.gameOver += 1;
@@ -119,6 +121,7 @@ export class Main {
     if (this.curtain) {
       g.draw.rect(0, 0,g.w, this.curtain, g.options.pal[0]);
     }
+    // g.draw.rect(this.p1.x, this.p1.y, 1, 1, g.options.pal[4])
   }
 
   helpText() {
