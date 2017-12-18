@@ -108,15 +108,19 @@ export class Map {
       wh = this.tileDim,
       ripple;
 
+    let col = 1;
     for (let i = 0; i < h; i += 1) {
       let row = this.data[this.data.length - i - 1];
       x = 0;
       row.forEach((cell) => {
         if (cell) {
           ctx.drawImage(tiles[cell],x, y);
-          if (this.waves === 1 && (cell === 8 || cell === 7)) {
-            // ctx.fillStyle = '#31a2f2';
-            // ctx.fillRect(x, y, wh, wh);
+          if (cell === 7 && this.waves === 1) {
+            ctx.fillStyle = '#31a2f2';
+            ctx.fillRect(x, y, wh, wh);
+          } else if (cell === 8 && this.waves !== 1) {
+            ctx.fillStyle = '#31a2f2';
+            ctx.fillRect(x, y, wh, wh);
           } else if (cell === 6) {
             if (Math.random() > 0.95) {
               let pos = g.H.rnd(wh/4, wh - (wh/4))
@@ -125,6 +129,8 @@ export class Map {
             }
           }
         }
+            // ctx.strokeStyle = '#000';
+            // ctx.strokeRect(x, y, wh, wh);
         x += wh;
       });
       y += wh;

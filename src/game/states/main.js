@@ -103,6 +103,7 @@ export class Main {
     if (this.curtain) {
       g.draw.rect(0, 0,g.w, this.curtain, g.options.pal[0]);
     }
+    // g.draw.rect(this.p1.x, this.p1.y, 1, 1, g.options.pal[4])
   }
 
   helpText() {

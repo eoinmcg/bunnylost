@@ -65,9 +65,9 @@ export class P1 extends Sprite {
     let newX = this.x;
     let newY = this.y;
 
-    if (i.r) {
+    if (i.r && this.x < 288) {
       newX = this.x + tile;
-    } else if (i.l) {
+    } else if (i.l && this.x > 0) {
       newX = this.x - tile;
     }
 
